@@ -1,0 +1,41 @@
+🛠️ Langkah Awal (Cuma Sekali Seumur Hidup Laptop)
+Identitas User: Biar GitHub tahu siapa yang ngetik kode.
+-git config --global user.name "Nama Lengkap Lo"
+-git config --global user.email "email-github-lo@example.com"
+
+Default Branch: Biar standar dunia (pake main, bukan master).
+-git config --global init.defaultBranch main
+
+
+
+🏗️ Langkah Bikin Markas Baru (Repo Baru)
+
+Kalau lo punya proyek baru (kayak fcc-projects) yang mau dihubungin ke GitHub:
+Buka Folder: Pake trik cmd di Address Bar folder lo.
+Inisialisasi: git init (Buat bikin folder .git rahasia).
+Koneksi ke Awan: git remote add origin https://github.com/username/repo-lo.git
+(Note: URL-nya dapet dari pas lo klik "Create Repository" di web GitHub).
+
+
+
+🔄 Langkah Rutin (Setiap Selesai Ngoding)
+Masuk Antrian: git add . (Titik artinya semua file baru/berubah masuk antrean).
+Kasih Label: git commit -m "pesan dalam bahasa inggris" (Kasih catatan progres).
+Kirim: git push origin main (Tunggu sampai muncul tulisan Total... success).
+
+
+
+🚨 Tips Darurat (Kalau Error)
+Cek Status: git status (Buat liat file mana yang belum di-add atau belum di-commit).
+Cek Remote: git remote -v (Buat mastiin laptop lo udah nyambung ke alamat GitHub yang bener).
+Salah Ketik URL Remote?: git remote set-url origin https://url-yang-bener.git
+
+
+
+berarti langkah berikutnya tiap gw selesai ngerjain lab atau project:
+-download my solution 
+-refactoring
+-buka folder di git dengan ketik bash
+-trus git add . 
+-trus git commit -m "keterangannya apa ini dalam bahasa inggris" 
+-trus git push origin main
