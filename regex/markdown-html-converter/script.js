@@ -4,7 +4,7 @@ const rawHTML = document.getElementById("html-output");
 const previewHTML = document.getElementById("preview");
 
 //first result function
-const convertMarkdown = (str) => {
+const convert = (str) => {
   const headingRegex = /^(#{1,3})\s*(.*)/;
   const heading = str.match(headingRegex);
   const boldRegex = /([*_]{2})\s*(.*)([*_]{2})\s*/;
@@ -47,17 +47,19 @@ const convertMarkdown = (str) => {
   if(quote){
     console.log(quote);
     return `<blockquote>${quote[2]}</blockquote>`
-  }
+  };
+
+  return inputHTML.value
 
 
 
 };
 //raw output function
-const showResult = () => {
+const convertMarkdown = () => {
   let inputValue = inputHTML.value;
-  let convertedValue = convertMarkdown(inputValue);
-  rawHTML.textContent = convertedValue;
+  let convertedValue = convert(inputValue);
   previewHTML.innerHTML = convertedValue;
+  return rawHTML.textContent = convertedValue;
 };
 
 
@@ -67,4 +69,4 @@ const showResult = () => {
 //so basically theres two results boxes, one will generate the raw HTML and the second will generate the result of those, build the first result before jump into the second
 
 
-inputHTML.addEventListener("input", showResult);
+inputHTML.addEventListener("input", convertMarkdown);
