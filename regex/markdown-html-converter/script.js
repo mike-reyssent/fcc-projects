@@ -11,8 +11,12 @@ const convertMarkdown = (str) => {
   const bold = str.match(boldRegex);
   const italicRegex = /([*_]{1})\s*(.*)([*_]{1})\s*/;
   const italic = str.match(italicRegex);
-  const imgRegex = /^([![(.*)]])([((.*))])$/;
+  const imgRegex = /^!\[(.*)\]\((.*)\)$/;
   const img = str.match(imgRegex);
+  const urlRegex = /^\[(.*\s*.*)\]\((.*)\)$/;
+  const url = str.match(urlRegex);
+  const quoteRegex = /^(>)\s*(.*)/;
+  const quote = str.match(quoteRegex);
   if(heading){
     const level = heading[1].length;
     const content = heading[2];
@@ -27,8 +31,23 @@ const convertMarkdown = (str) => {
     return `<em>${content}</em>`
   };
   if(img){
-    return `<img alt="${img}">`
+    const contentText = img[2];
+    const contentURL = img[3];
+    
+    console.log(img)
+    return `<img alt="${contentText}" src="${contentURL}">`
   };
+  if(url){
+    const contentText = url[2];
+    const contentURL = url[3];
+    
+    console.log(img)
+    return `<a href="${contentURL}">${contentText}</a>`
+  };
+  if(quote){
+    console.log(quote);
+    return `<blockquote>${quote[2]}</blockquote>`
+  }
 
 
 
