@@ -3,70 +3,46 @@ const inputHTML = document.getElementById("markdown-input");
 const rawHTML = document.getElementById("html-output");
 const previewHTML = document.getElementById("preview");
 
-//first result function
 const convert = (str) => {
-  const headingRegex = /^(#{1,3})\s*(.*)/;
-  const heading = str.match(headingRegex);
-  const boldRegex = /([*_]{2})\s*(.*)([*_]{2})\s*/;
-  const bold = str.match(boldRegex);
-  const italicRegex = /([*_]{1})\s*(.*)([*_]{1})\s*/;
-  const italic = str.match(italicRegex);
-  const imgRegex = /^!\[(.*)\]\((.*)\)$/;
-  const img = str.match(imgRegex);
-  const urlRegex = /^\[(.*\s*.*)\]\((.*)\)$/;
-  const url = str.match(urlRegex);
-  const quoteRegex = /^(>)\s*(.*)/;
-  const quote = str.match(quoteRegex);
-  if(heading){
-    const level = heading[1].length;
-    const content = heading[2];
-    return `<h${level}>${content}</h${level}>`;
-  };
-  if(bold){
-    const content = bold[2];
-    return `<strong>${content}</strong>`
-  };
-  if(italic){
-    const content = italic[2];
-    return `<em>${content}</em>`
-  };
-  if(img){
-    const contentText = img[2];
-    const contentURL = img[3];
-    
-    console.log(img)
-    return `<img alt="${contentText}" src="${contentURL}">`
-  };
-  if(url){
-    const contentText = url[2];
-    const contentURL = url[3];
-    
-    console.log(img)
-    return `<a href="${contentURL}">${contentText}</a>`
-  };
-  if(quote){
-    console.log(quote);
-    return `<blockquote>${quote[2]}</blockquote>`
-  };
+  let result = str;
 
-  return inputHTML.value
+  // 1. BLOCK ELEMENTS (Heading & Quote)
+  // Pakai 'if-else' karena satu baris cuma bisa jadi satu jenis blok
+  if (/^(#{1,3})\s+(.*)/.test(result)) {
+    result = result.replace(/^(#{1,3})\s+(.*)/, (m, g1, g2) => `<h${g1.length}>${g2}</h${g1.length}>`);
+  } else if (/^>\s+(.*)/.test(result)) {
+    result = result.replace(/^>\s+(.*)/, '<blockquote>$1</blockquote>');
+  }
 
+  // 2. INLINE ELEMENTS (Bold, Italic, Link, Image)
+  // PENTING: Gunakan .replace() beruntun agar bisa 'Nested'
+  
+  // Image dulu baru Link (biar tanda ! gak ganggu)
+  result = result.replace(/!\[(.*?)\]\((.*?)\)/g, '<img alt="$1" src="$2">');
+  result = result.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>');
 
+  // Bold (** atau __)
+  result = result.replace(/(\*\*|__)(.*?)\1/g, '<strong>$2</strong>');
+  
+  // Italic (* atau _)
+  result = result.replace(/(\*|_)(.*?)\1/g, '<em>$2</em>');
 
+  return result;
 };
-//raw output function
+
+// TRIGGER UTAMA (The Engine)
 const convertMarkdown = () => {
-  let inputValue = inputHTML.value;
-  let convertedValue = convert(inputValue);
-  previewHTML.innerHTML = convertedValue;
-  return rawHTML.textContent = convertedValue;
+  const input = inputHTML.value;
+  
+  // Algoritma: Split (Potong) -> Map (Proses) -> Join (Gabung)
+  const finalResult = input.split('\n')
+    .map(line => convert(line))
+    .join(''); 
+
+  rawHTML.textContent = finalResult;
+  previewHTML.innerHTML = finalResult;
+  
+  return finalResult;
 };
-
-
-
-
-
-//so basically theres two results boxes, one will generate the raw HTML and the second will generate the result of those, build the first result before jump into the second
-
 
 inputHTML.addEventListener("input", convertMarkdown);
